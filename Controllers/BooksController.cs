@@ -22,7 +22,9 @@ namespace Kolozsvari_Balint_Lab2.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var libraryContext = _context.Book.Include(b => b.Genre);
+            var libraryContext = _context.Book
+                .Include(b => b.Genre)
+                .Include(b => b.Authors);
             return View(await libraryContext.ToListAsync());
         }
 
@@ -36,6 +38,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
 
             var book = await _context.Book
                 .Include(b => b.Genre)
+                .Include(b => b.Authors)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
@@ -49,6 +52,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
         public IActionResult Create()
         {
             ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "Name");
+            ViewData["AuthorsID"] = new SelectList(_context.Set<Authors>(), "ID", "LastName");
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Author,Price,GenreID")] Book book)
+        public async Task<IActionResult> Create([Bind("ID,Title,Price,GenreID,AuthorsID")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +69,9 @@ namespace Kolozsvari_Balint_Lab2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "ID", book.GenreID);
+
+            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "Name", book.GenreID);
+            ViewData["AuthorsID"] = new SelectList(_context.Set<Authors>(), "ID", "LastName", book.AuthorsID);
             return View(book);
         }
 
@@ -82,7 +88,9 @@ namespace Kolozsvari_Balint_Lab2.Controllers
             {
                 return NotFound();
             }
-            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "ID", book.GenreID);
+
+            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "Name", book.GenreID);
+            ViewData["AuthorsID"] = new SelectList(_context.Set<Authors>(), "ID", "LastName", book.AuthorsID);
             return View(book);
         }
 
@@ -91,7 +99,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Author,Price,GenreID")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Price,GenreID,AuthorsID")] Book book)
         {
             if (id != book.ID)
             {
@@ -118,7 +126,9 @@ namespace Kolozsvari_Balint_Lab2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "ID", book.GenreID);
+
+            ViewData["GenreID"] = new SelectList(_context.Set<Genre>(), "ID", "Name", book.GenreID);
+            ViewData["AuthorsID"] = new SelectList(_context.Set<Authors>(), "ID", "LastName", book.AuthorsID);
             return View(book);
         }
 
@@ -132,6 +142,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
 
             var book = await _context.Book
                 .Include(b => b.Genre)
+                .Include(b => b.Authors)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
