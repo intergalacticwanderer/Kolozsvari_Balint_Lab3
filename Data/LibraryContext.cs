@@ -18,6 +18,7 @@ namespace Kolozsvari_Balint_Lab2.Data
         public DbSet<Kolozsvari_Balint_Lab2.Models.Customer> Customer { get; set; } = default!;
         public DbSet<Kolozsvari_Balint_Lab2.Models.Genre> Genre { get; set; } = default!;
         public DbSet<Kolozsvari_Balint_Lab2.Models.Authors> Authors { get; set; } = default!;
+        public DbSet<Kolozsvari_Balint_Lab2.Models.Order> Order { get; set; } = default!;
     }
 }
 

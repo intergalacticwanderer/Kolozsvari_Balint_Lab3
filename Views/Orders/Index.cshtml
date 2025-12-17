@@ -1,0 +1,48 @@
+@model IEnumerable<Kolozsvari_Balint_Lab2.Models.Order>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().OrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Customer.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Book.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.OrderDate.ToString("yyyy-MM-dd")
+            </td>
+            <td>
+                @item.Customer?.Name
+            </td>
+            <td>
+                @item.Book?.Title
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.OrderID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OrderID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OrderID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

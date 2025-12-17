@@ -35,16 +35,15 @@ namespace Kolozsvari_Balint_Lab2.Controllers
             {
                 return NotFound();
             }
-
             var book = await _context.Book
-                .Include(b => b.Genre)
-                .Include(b => b.Authors)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            .Include(s => s.Orders)
+            .ThenInclude(e => e.Customer)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
                 return NotFound();
             }
-
             return View(book);
         }
 
@@ -171,5 +170,7 @@ namespace Kolozsvari_Balint_Lab2.Controllers
         {
             return _context.Book.Any(e => e.ID == id);
         }
+
+
     }
 }
