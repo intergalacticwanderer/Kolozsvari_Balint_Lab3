@@ -31,7 +31,11 @@ namespace Kolozsvari_Balint_Lab2.Controllers
             }
 
             var author = await _context.Authors
+                .Include(a => a.Books)               // load related books
+                .ThenInclude(b => b.Genre)           // load book genres (optional)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
+
             if (author == null)
             {
                 return NotFound();

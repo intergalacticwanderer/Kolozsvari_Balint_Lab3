@@ -1,0 +1,50 @@
+@model Kolozsvari_Balint_Lab2.Models.Authors
+
+@{
+    ViewData["Title"] = "Author Details";
+}
+
+<h1>Author Details</h1>
+
+<div>
+    <h4>@Model.FirstName @Model.LastName</h4>
+</div>
+
+<hr />
+
+<h5>Books by this author</h5>
+
+@if (Model.Books == null || !Model.Books.Any())
+{
+    <p><em>No books found for this author.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Genre</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in Model.Books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Price</td>
+                <td>@book.Genre?.Name</td>
+                <td>
+                    <a asp-controller="Books" asp-action="Details" asp-route-id="@book.ID">Details</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<p>
+    <a asp-action="Index">Back to List</a>
+</p>        
